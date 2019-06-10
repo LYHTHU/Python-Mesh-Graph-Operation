@@ -1,4 +1,4 @@
-# Test loading 3D mesh obj file.\
+# Test loading 3D mesh obj file.
 
 import trimesh
 import pymesh
@@ -27,12 +27,15 @@ def mesh2graph(mesh):
     graph = trimesh.graph.vertex_adjacency_graph(mesh)
     return graph
 
-if __name__ == "__main__":
-    obj = create_ellisoid()
-    simple_deformation(obj)
-    graph = mesh2graph(obj)
+def test_mesh2graph():
+    mesh = trimesh.load(mesh_path)
+    graph = mesh2graph(mesh)
 
-    for v in graph.vertices:
-        print(graph.neighbors(0))
+
+if __name__ == "__main__":
+    # obj = create_ellisoid()
+    # simple_deformation(obj)
+        
+    test_mesh2graph()
 
 
