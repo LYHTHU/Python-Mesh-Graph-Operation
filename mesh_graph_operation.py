@@ -3,6 +3,8 @@
 import trimesh
 import pymesh
 import networkx as nx
+import matplotlib.pyplot as plt 
+import torch
 
 mesh_path = "model_normalized.obj"
 
@@ -14,9 +16,9 @@ def load_mesh(path):
 # TODO: need to be figure out 
 
 def create_ellisoid():
-    mesh = trimesh.Trimesh(vertices=[[0, 0, 0], [0, 0, 1], [0, 1, 0], [1, 0, 0]],
-                       faces=[[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]])
-
+    mesh = trimesh.primitives.Capsule()
+    # mesh = trimesh.primitives.Extrusion()
+    mesh.show()
     return mesh
 
 
@@ -28,14 +30,17 @@ def mesh2graph(mesh):
     return graph
 
 def test_mesh2graph():
-    mesh = trimesh.load(mesh_path)
+    mesh = trimesh.load_mesh(mesh_path)
     graph = mesh2graph(mesh)
+
+    # for v in mesh.vertices:
+    #     print(v)
 
 
 if __name__ == "__main__":
     # obj = create_ellisoid()
-    # simple_deformation(obj)
-        
-    test_mesh2graph()
+    # simple_deformation(obj)      
+    # test_mesh2graph()
+    create_ellisoid()
 
 
