@@ -6,8 +6,9 @@ import os
 def mesh2dgl(path, save=False):
     mesh = trimesh.load_mesh(path)
     graph = trimesh.graph.vertex_adjacency_graph(mesh)
-    
-    return graph
+    dgl_graph = dgl.DGLGraph()
+    dgl_graph.from_networkx(graph)
+    return dgl_graph
 
 def dgl2mesh(path, save=False):
     pass
@@ -22,4 +23,4 @@ def save_path(origin, suffix):
 
 if __name__ == "__main__":
     path = "./model_normalized.obj"
-    # g = mesh2dgl(path, save=True)
+    graph = mesh2dgl(path, save=True)
