@@ -12,6 +12,8 @@ import queue
 def mesh2dgl(path, save=False):
     mesh = trimesh.load_mesh(path)
     graph = trimesh.graph.vertex_adjacency_graph(mesh)
+    print(len(mesh.edges))
+
     dgl_graph = dgl.DGLGraph()
     dgl_graph.from_networkx(graph)
     dgl_graph.ndata['l'] = torch.Tensor(mesh.vertices)
@@ -94,6 +96,7 @@ def save_file(out_path, obj):
 if __name__ == "__main__":
     path = "./model_normalized.obj"
     graph = mesh2dgl(path, save=True)
+
     # graph_path = "./model_normalized.dgl"
     # mesh = dgl2mesh(graph_path)
     
