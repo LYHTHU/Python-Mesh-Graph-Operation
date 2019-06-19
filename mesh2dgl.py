@@ -11,15 +11,10 @@ import queue
 
 def mesh2dgl(path, save=False):
     mesh = trimesh.load_mesh(path)
-    graph = trimesh.graph.vertex_adjacency_graph(mesh)
-
+    # graph = trimesh.graph.vertex_adjacency_graph(mesh).to_directed()
     # graph.remove_edges_from(list(graph.edges()))
-
-    # for m in mesh.faces:
-    #     graph.add_edge(m[0], m[1])
-    #     graph.add_edge(m[1], m[2])
-    #     graph.add_edge(m[2], m[0])
-
+    graph = nx.DiGraph()
+    graph.add_edges_from(mesh.edges)
 
     print("Original graph has", len(graph.edges), "edges.")
     print("Original mesh has", len(mesh.faces), "faces.")
@@ -29,12 +24,9 @@ def mesh2dgl(path, save=False):
 
     mesh.show()
     
-
     dgl_graph = dgl.DGLGraph()
     dgl_graph.from_networkx(graph)
     dgl_graph.ndata['l'] = torch.Tensor(mesh.vertices)
-
-    print(nx.is_connected(graph))
 
     # for i in range(len(mesh.vertices)):
     #     if mesh.vertices[i].all() != dgl_graph.nodes[i].data['l'].numpy()[0].all():
@@ -49,8 +41,7 @@ def mesh2dgl(path, save=False):
 def dgl2mesh(path, save=False):
     in_file = open(path, "rb")
     graph = pickle.load(in_file)
-    g = graph.to_networkx(node_attrs='l').to_undirected()
-    print(nx.is_connected(g))
+    g = graph.to_networkx(node_attrs='l').to_directed()
 
     print("G has", len(g.edges()), "edges.")
 
@@ -88,15 +79,10 @@ def dgl2mesh(path, save=False):
             #     if g.has_edge(n1, n2) and n2 != crt_node and n1 != n2:
             #         faces.append([crt_node, n1, n2])
 
-            for j in range(i+1, len(neighbor_list)):
+            for j in range(len(neighbor_list)):
                 n2 = neighbor_list[j]
                 if g.has_edge(n1, n2) and n2 != crt_node and n1 != n2:
                     faces.append([crt_node, n1, n2])
-                    # faces.append([crt_node, n2, n1])
-                    # faces.append([n2, n1, crt_node])
-                    # faces.append([n1, n2, crt_node])
-                    # faces.append([n2, crt_node, n1])
-                    # faces.append([n1, crt_node, n2])
 
         traversed[crt_node] = True
         count += 1
