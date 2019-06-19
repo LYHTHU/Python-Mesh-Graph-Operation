@@ -119,10 +119,10 @@ def save_file(out_path, obj):
 if __name__ == "__main__":
     # path = "./model_normalized.obj"
     ifshow =False
-    path = "./cube.obj"
-    graph = mesh2dgl(path, save=True, show = ifshow)
+    # path = "./cube.obj"
+    # graph = mesh2dgl(path, save=True, show = ifshow)
 
-    graph_path = "./cube.dgl"
+    graph_path = "./cube_new.dgl"
     mesh = dgl2mesh(graph_path, save=True, show = ifshow)
 
     print(mesh.vertices)
