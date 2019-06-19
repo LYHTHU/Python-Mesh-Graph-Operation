@@ -12,7 +12,23 @@ import queue
 def mesh2dgl(path, save=False):
     mesh = trimesh.load_mesh(path)
     graph = trimesh.graph.vertex_adjacency_graph(mesh)
-    print(len(mesh.edges))
+
+    # graph.remove_edges_from(list(graph.edges()))
+
+    # for m in mesh.faces:
+    #     graph.add_edge(m[0], m[1])
+    #     graph.add_edge(m[1], m[2])
+    #     graph.add_edge(m[2], m[0])
+
+
+    print("Original graph has", len(graph.edges), "edges.")
+    print("Original mesh has", len(mesh.faces), "faces.")
+    # Why unique edges are even less than edges.
+    print("Original mesh has", len(mesh.vertices), "vertices.")
+    print("Original mesh has", len(mesh.edges_unique), "unique edges.")
+
+    mesh.show()
+    
 
     dgl_graph = dgl.DGLGraph()
     dgl_graph.from_networkx(graph)
@@ -23,8 +39,7 @@ def mesh2dgl(path, save=False):
     # for i in range(len(mesh.vertices)):
     #     if mesh.vertices[i].all() != dgl_graph.nodes[i].data['l'].numpy()[0].all():
     #         print("{} != {}".format(mesh.vertices[i], dgl_graph.nodes[i].data['l'][0].numpy()))
-    print("Original graph has", len(graph.edges), "edges.")
-    print("Original mesh has", len(mesh.faces), "faces.")
+    
     if save:
         out_path = save_path(path, ".dgl")
         save_file(out_path, dgl_graph)
@@ -41,6 +56,7 @@ def dgl2mesh(path, save=False):
 
     mesh = trimesh.Trimesh()
     mesh.vertices = graph.ndata['l']
+
     # TODO: Add triangles, BFS
     n_nodes = len(graph.nodes())
     traversed = [False] * n_nodes
@@ -62,21 +78,32 @@ def dgl2mesh(path, save=False):
                     crt_node = i
                     break
         neighbor_list = list(g.neighbors(crt_node))
-        for i, n1 in enumerate(neighbor_list):
+        for i in range(len(neighbor_list)):
+            n1 = neighbor_list[i]
             if traversed[n1] or n1 == crt_node:
                 continue
             q.put(n1)
+            # for j in range(len(neighbor_list)):
+            #     n2 = neighbor_list[j]
+            #     if g.has_edge(n1, n2) and n2 != crt_node and n1 != n2:
+            #         faces.append([crt_node, n1, n2])
 
             for j in range(i+1, len(neighbor_list)):
                 n2 = neighbor_list[j]
-                if g.has_edge(n1, n2) and n2 != crt_node:
+                if g.has_edge(n1, n2) and n2 != crt_node and n1 != n2:
                     faces.append([crt_node, n1, n2])
+                    # faces.append([crt_node, n2, n1])
+                    # faces.append([n2, n1, crt_node])
+                    # faces.append([n1, n2, crt_node])
+                    # faces.append([n2, crt_node, n1])
+                    # faces.append([n1, crt_node, n2])
+
         traversed[crt_node] = True
         count += 1
     mesh.faces = np.array(faces)
     print("end")
     
-    print(mesh.faces)
+    print(len(mesh.faces))
     in_file.close()
     mesh.show()
     return mesh
@@ -97,6 +124,6 @@ if __name__ == "__main__":
     path = "./model_normalized.obj"
     graph = mesh2dgl(path, save=True)
 
-    # graph_path = "./model_normalized.dgl"
-    # mesh = dgl2mesh(graph_path)
+    graph_path = "./model_normalized.dgl"
+    mesh = dgl2mesh(graph_path)
     
