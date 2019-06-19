@@ -103,3 +103,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 model_normalized.dgl
+cube.obj
+cube.dgl
+cube_new.dgl
+cube.dgl

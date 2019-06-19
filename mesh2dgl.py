@@ -97,13 +97,17 @@ def dgl2mesh(path, save=False, show = False):
     in_file.close()
     if show:
         mesh.show()
+
+    if save:
+        save_file = save_path(path, ".obj")
+        mesh.export(save_file)
     print("end")
     return mesh
 
 def save_path(origin, suffix):
     breakpoint = origin.rfind('/')
     dir_path = origin[:breakpoint]
-    name = origin[breakpoint:origin.rfind('.')]+suffix
+    name = origin[breakpoint:origin.rfind('.')] + "_new" +suffix
     save_path = os.path.join(dir_path+name)
     return save_path
 
@@ -119,7 +123,7 @@ if __name__ == "__main__":
     graph = mesh2dgl(path, save=True, show = ifshow)
 
     graph_path = "./cube.dgl"
-    mesh = dgl2mesh(graph_path, show = ifshow)
+    mesh = dgl2mesh(graph_path, save=True, show = ifshow)
 
     print(mesh.vertices)
     print(mesh.faces)
