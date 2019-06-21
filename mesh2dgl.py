@@ -22,7 +22,6 @@ def mesh2dgl(path, save=False, show = False):
 
     print("Original graph has", len(graph.edges), "edges.")
     print("Original mesh has", len(mesh.faces), "faces.")
-    # Why unique edges are even less than edges.
     print("Original mesh has", len(mesh.vertices), "vertices.")
     # print("Original mesh has", len(mesh.edges_unique), "unique edges.")    
     dgl_graph = dgl.DGLGraph()
@@ -77,14 +76,13 @@ def dgl2mesh(path, save=False, show = False):
             if traversed[n1] or n1 == crt_node:
                 continue
             q.put(n1)
-            # for j in range(len(neighbor_list)):
-            #     n2 = neighbor_list[j]
-            #     if g.has_edge(n1, n2) and n2 != crt_node and n1 != n2:
-            #         faces.append([crt_node, n1, n2])
 
-            for j in range(len(neighbor_list)):
-                n2 = neighbor_list[j]
-                if g.has_edge(n1, n2) and n2 != crt_node and n1 != n2:
+            n1_neighbor = list(g.neighbors(n1))
+            for j in range(len(n1_neighbor)):
+                n2 = n1_neighbor[j]
+                if traversed[n2] or n2 == crt_node:
+                    continue
+                if g.has_edge(n2, crt_node):
                     faces.append([crt_node, n1, n2])
 
         traversed[crt_node] = True
@@ -118,12 +116,12 @@ def save_file(out_path, obj):
 
 if __name__ == "__main__":
     # path = "./model_normalized.obj"
-    ifshow =False
-    # path = "./cube.obj"
-    # graph = mesh2dgl(path, save=True, show = ifshow)
+    ifshow = True
+    path = "./cube.obj"
+    graph = mesh2dgl(path, save=True, show = False)
+
+    print("\n" + "="*100 + "\n")
 
     graph_path = "./cube_new.dgl"
+    # graph_path = "./model_normalized_new.dgl"
     mesh = dgl2mesh(graph_path, save=True, show = ifshow)
-
-    print(mesh.vertices)
-    print(mesh.faces)
