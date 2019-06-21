@@ -51,6 +51,7 @@ def dgl2mesh(path, save=False, show = False):
     mesh.vertices = graph.ndata['l']
 
     # TODO: Add triangles, BFS
+    # Bugs occur when there is faces inside the surface.
     n_nodes = len(graph.nodes())
     traversed = [False] * n_nodes
     count = 0
@@ -117,11 +118,13 @@ def save_file(out_path, obj):
 if __name__ == "__main__":
     # path = "./model_normalized.obj"
     ifshow = True
-    path = "./cube.obj"
-    graph = mesh2dgl(path, save=True, show = False)
+    path = "./tube.obj"
+    graph = mesh2dgl(path, save=True, show = True)
 
     print("\n" + "="*100 + "\n")
 
-    graph_path = "./cube_new.dgl"
+    graph_path = "./tube_new.dgl"
     # graph_path = "./model_normalized_new.dgl"
+
+    #TODO: find some way to save the face information in the graph
     mesh = dgl2mesh(graph_path, save=True, show = ifshow)
