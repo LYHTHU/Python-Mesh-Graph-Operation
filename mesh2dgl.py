@@ -121,14 +121,13 @@ def save_file(out_path, obj):
     output.close()
 
 if __name__ == "__main__":
-    path = "./model_normalized.obj"
+    # path = "./data/model_normalized.obj"
     ifshow = True
-    # path = "./tube.obj"
+    path = "./data/tube.obj"
     graph = mesh2dgl(path, save=True, show = False)
-
     print("\n" + "="*100 + "\n")
 
-    # graph_path = "./tube_new.dgl"
-    graph_path = "./model_normalized_new.dgl"
+    graph_path = "./tube_new.dgl"
+    # graph_path = "./data/model_normalized_new.dgl"
     # TODO: find some way to save the face information in the graph
     mesh = dgl2mesh(graph_path, save=True, show = ifshow)
