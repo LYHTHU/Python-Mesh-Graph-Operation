@@ -21,7 +21,6 @@ def create_ellisoid():
     mesh.show()
     return mesh
 
-
 def simple_deformation(obj):
     pass
 
