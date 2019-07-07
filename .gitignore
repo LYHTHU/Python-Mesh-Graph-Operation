@@ -114,3 +114,6 @@ venv.bak/
 # tube_new.dgl
 *.dgl
 *_new.obj
+*.stl
+*.ply
+*.off
