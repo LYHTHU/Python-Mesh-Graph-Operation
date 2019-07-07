@@ -20,7 +20,7 @@ def mesh2pcd(path="", obj=None, save=False):
 
 def dgl2PC(graph):
     mesh = dgl2mesh("", graph)
-    return mesh2PC(mesh)
+    return mesh2pcd(mesh)
 
 
 if __name__ == "__main__":
