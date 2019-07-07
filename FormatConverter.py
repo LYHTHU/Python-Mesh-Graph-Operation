@@ -18,7 +18,7 @@ def obj2off(path):
 def obj2stl(path):
     out_path = save_path(path, ".stl")
     obj = trimesh.load_mesh(path)
-    obj.export(out_path, file_type="stl")
+    obj.export(out_path, file_type="stl_ascii")
 
 
 def obj2ply(path):
@@ -46,4 +46,4 @@ def save_path(origin, suffix):
 
 if __name__ == "__main__":
     obj_path = "./data/tube.obj"
-    obj2ply(obj_path)
+    obj2off(obj_path)
