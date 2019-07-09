@@ -28,7 +28,7 @@ def traverse_copy_obj(origin_path, target_path):
 
 
 def traverse_copy_img(origin_path, target_path):
-    classes = os.listdir(origin_path)
+    classes = os.listdir(target_path)
     count = 0
     for class_name in classes:
         cls_path = os.path.join(origin_path, class_name)
