@@ -13,7 +13,6 @@ def sample_surface(in_path, out_path, count_v):
     rand = np.random.randn(len(vertices), 1)
     dist = rand * normals
     vertices = vertices + dist
-
     # save mesh, and normal vectors
     f = open(out_path, "w")
     for i, item in enumerate(vertices):
