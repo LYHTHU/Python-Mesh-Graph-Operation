@@ -3,7 +3,7 @@ from trimesh import sample, proximity
 import numpy as np
 import open3d
 import time
-
+from show_pcd import *
 
 def sample_near_surface(in_path, out_path, count_v, ratio=0.02):
     mesh = trimesh.load_mesh(in_path)
@@ -23,20 +23,7 @@ def sample_near_surface(in_path, out_path, count_v, ratio=0.02):
     # Using numpy
     np.save(out_path, vertices)
 
-def show_pcd(path):
-    print("Showing {}".format(path))
-    raw = np.load(path)
-    arr = raw[:, 0:3]
-    color = []
-    pcd = open3d.geometry.PointCloud()
-    for i in range(raw[:, 3].size):
-        if raw[i, 3] > 0:
-            color.append([1, 0, 0])
-        else:
-            color.append([0, 0, 1])
-    pcd.points = open3d.utility.Vector3dVector(arr)
-    pcd.colors = open3d.utility.Vector3dVector(color)
-    open3d.visualization.draw_geometries([pcd])
+
 
 
 if __name__ == "__main__":
